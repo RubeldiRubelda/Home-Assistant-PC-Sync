@@ -1,0 +1,12 @@
+{
+  "domain": "computer_sync",
+  "name": "Computer Sync",
+  "version": "1.0.0",
+  "documentation": "https://github.com/yourusername/ha-computer-sync",
+  "issue_tracker": "https://github.com/yourusername/ha-computer-sync/issues",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": [],
+  "iot_class": "local_push",
+  "config_flow": true
+}

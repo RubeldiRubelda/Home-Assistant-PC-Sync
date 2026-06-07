@@ -1,0 +1,5 @@
+#löschen der config Dateien, da diese sensible Daten enthalten können
+/windows/config.cfg
+/linux/config.cfg
+ 
+windows/config.cfg

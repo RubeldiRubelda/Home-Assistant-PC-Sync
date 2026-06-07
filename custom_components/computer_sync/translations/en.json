@@ -1,0 +1,15 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Computer Sync",
+        "description": "Activates the heartbeat endpoint at `/api/computer_sync/heartbeat`.\n\nThen run `setup.ps1` on your Windows PC. The device will be detected automatically and all sensors & control buttons will be created – no further configuration needed!"
+      }
+    },
+    "abort": {
+      "already_configured": "This integration is already set up.",
+      "unique_id_configured": "This device is already registered."
+    },
+    "error": {}
+  }
+}

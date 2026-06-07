@@ -1,0 +1,132 @@
+# ==============================================================================
+# Home Assistant Computer Sync - Home Assistant Configuration
+# ==============================================================================
+# Add the snippets in this file to your Home Assistant configuration.
+#
+# There are TWO ways to add input_select helpers in modern Home Assistant:
+#
+# Option A – Via the UI (recommended, no restart needed):
+#   Settings → Devices & Services → Helpers → + Create Helper → Dropdown
+#
+# Option B – Via configuration.yaml (shown below).
+#   After editing, restart Home Assistant for changes to take effect.
+#
+# Replace MY_LAPTOP, MY_DESKTOP etc. with the DEVICE_ID values you used
+# during installation on each computer.
+# ==============================================================================
+
+
+# ------------------------------------------------------------------------------
+# input_select – Remote command dropdowns (one per computer)
+# ------------------------------------------------------------------------------
+# Each input_select acts as the "command inbox" for one computer.
+# The sync agent polls this entity and executes the selected command.
+#
+# After executing a command the agent resets the value back to "none"
+# automatically.
+#
+# Add one block per managed computer and adjust the entity names to match your
+# DEVICE_ID values (e.g. my_laptop → input_select.my_laptop_command).
+# ------------------------------------------------------------------------------
+input_select:
+
+  my_laptop_command:
+    name: My Laptop – Remote Command
+    options:
+      - none
+      - shutdown
+      - reboot
+      - sleep
+      - hibernate
+      - lock
+    initial: none
+    icon: mdi:laptop
+
+  # Add more computers here:
+  # my_desktop_command:
+  #   name: My Desktop – Remote Command
+  #   options:
+  #     - none
+  #     - shutdown
+  #     - reboot
+  #     - sleep
+  #     - hibernate
+  #     - lock
+  #   initial: none
+  #   icon: mdi:desktop-tower
+
+
+# ------------------------------------------------------------------------------
+# automation – Mark computer offline when no update is received for 5 minutes
+# ------------------------------------------------------------------------------
+# The sync agent sends sensor.DEVICE_ID_status = "online" every UPDATE_INTERVAL
+# seconds.  The automations below set status to "offline" when the last update
+# is more than 5 minutes ago, so you always know whether the computer is on.
+#
+# Requires the "Time" integration (enabled by default).
+# ------------------------------------------------------------------------------
+automation:
+
+  - alias: "My Laptop – Mark Offline If No Update"
+    description: >
+      Sets the laptop status to 'offline' when it hasn't sent an update
+      for more than 5 minutes (e.g. powered off or no network).
+    trigger:
+      - platform: state
+        entity_id: sensor.my_laptop_status
+        to: "online"
+        for:
+          minutes: 5
+    action:
+      - service: python_script.set_state
+        # If you don't use python_script, use a template sensor instead (see below).
+        data:
+          entity_id: sensor.my_laptop_status
+          state: offline
+
+  # Simpler alternative using a Template Sensor (add to template: block):
+  # template:
+  #   - sensor:
+  #       - name: "My Laptop Online"
+  #         state: >
+  #           {% set last = states.sensor.my_laptop_status.last_changed %}
+  #           {% if last and (now() - last).total_seconds() < 300 %}
+  #             online
+  #           {% else %}
+  #             offline
+  #           {% endif %}
+
+
+# ------------------------------------------------------------------------------
+# Lovelace / Dashboard Card Examples
+# ------------------------------------------------------------------------------
+# Paste these into a Manual Card on your dashboard to display all metrics for
+# one computer.  Replace "my_laptop" with your DEVICE_ID.
+# ------------------------------------------------------------------------------
+#
+# type: entities
+# title: My Laptop
+# entities:
+#   - entity: sensor.my_laptop_status
+#   - entity: sensor.my_laptop_cpu_usage
+#   - entity: sensor.my_laptop_memory_usage
+#   - entity: sensor.my_laptop_disk_usage
+#   - entity: sensor.my_laptop_battery_level
+#   - entity: sensor.my_laptop_battery_status
+#   - entity: sensor.my_laptop_uptime
+#   - entity: sensor.my_laptop_ip_address
+#   - entity: input_select.my_laptop_command
+#
+# You can also use a "Glance" card for a compact overview:
+#
+# type: glance
+# title: My Laptop
+# entities:
+#   - entity: sensor.my_laptop_cpu_usage
+#     name: CPU
+#   - entity: sensor.my_laptop_memory_usage
+#     name: RAM
+#   - entity: sensor.my_laptop_battery_level
+#     name: Battery
+#   - entity: sensor.my_laptop_status
+#     name: Status

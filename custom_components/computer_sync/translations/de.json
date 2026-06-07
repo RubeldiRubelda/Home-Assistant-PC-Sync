@@ -1,0 +1,15 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Computer Sync einrichten",
+        "description": "Aktiviert den Heartbeat-Endpunkt unter `/api/computer_sync/heartbeat`.\n\nFühre danach `setup.ps1` auf deinem Windows-PC aus. Das Gerät wird automatisch erkannt und alle Sensoren & Steuerungs-Buttons werden angelegt – kein weiteres Einrichten notwendig!"
+      }
+    },
+    "abort": {
+      "already_configured": "Diese Integration ist bereits eingerichtet.",
+      "unique_id_configured": "Dieses Gerät ist bereits registriert."
+    },
+    "error": {}
+  }
+}
