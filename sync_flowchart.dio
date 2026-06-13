@@ -1,0 +1,255 @@
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- START -->
+    <mxCell id="2" value="START&#xa;sync.ps1 ausfuehren" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+      <mxGeometry x="300" y="30" width="220" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Config laden -->
+    <mxCell id="3" value="config.cfg Pfad bestimmen&#xa;($env:HA_CONFIG oder Skriptordner)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="140" width="330" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- Config vorhanden? -->
+    <mxCell id="4" value="config.cfg&#xa;vorhanden?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="280" y="245" width="260" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Fehler: Config fehlt -->
+    <mxCell id="5" value="Write-Error:&#xa;Config nicht gefunden&#xa;exit 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="620" y="255" width="170" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- EXIT -->
+    <mxCell id="6" value="EXIT" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="650" y="360" width="110" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Config parsen -->
+    <mxCell id="7" value="config.cfg parsen&#xa;Kommentare + leere Zeilen ignorieren&#xa;KEY=VALUE Paare einlesen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="385" width="330" height="65" as="geometry" />
+    </mxCell>
+
+    <!-- Pflichtfelder ok? -->
+    <mxCell id="8" value="HA_URL, HA_TOKEN,&#xa;DEVICE_ID vorhanden?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="280" y="500" width="260" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Fehler: Pflichtfeld fehlt -->
+    <mxCell id="9" value="Write-Error:&#xa;Missing required config&#xa;exit 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="620" y="510" width="170" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- EXIT 2 -->
+    <mxCell id="10" value="EXIT" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="650" y="615" width="110" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Variablen setzen -->
+    <mxCell id="11" value="Variablen setzen&#xa;HA_URL / HA_TOKEN / DEVICE_ID&#xa;UPDATE_INTERVAL (default 30s)&#xa;COMMANDS_ENABLED (default true)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="640" width="330" height="75" as="geometry" />
+    </mxCell>
+
+    <!-- Main Loop -->
+    <mxCell id="12" value="HAUPTSCHLEIFE (Endlosschleife)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="770" width="330" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Metriken sammeln -->
+    <mxCell id="13" value="Systemmetriken sammeln&#xa;CPU % (Win32_Processor)&#xa;RAM % (Win32_OperatingSystem)&#xa;Disk C: % (Win32_LogicalDisk)&#xa;Akku % + Status (Win32_Battery)&#xa;Uptime (LastBootUpTime)&#xa;IP-Adresse (Get-NetIPAddress)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="245" y="870" width="330" height="130" as="geometry" />
+    </mxCell>
+
+    <!-- JSON zusammenbauen -->
+    <mxCell id="14" value="JSON Payload erstellen&#xa;(ConvertTo-Json)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="1050" width="330" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- POST Request -->
+    <mxCell id="15" value="POST /api/computer_sync/heartbeat&#xa;Header: Authorization: Bearer TOKEN&#xa;Body: JSON Payload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="1155" width="330" height="65" as="geometry" />
+    </mxCell>
+
+    <!-- Request erfolgreich? -->
+    <mxCell id="16" value="HTTP Request&#xa;erfolgreich?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="280" y="1270" width="260" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Fehler loggen -->
+    <mxCell id="17" value="Write-Log: Fehler / HA&#xa;nicht erreichbar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="620" y="1280" width="170" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Antwort auswerten -->
+    <mxCell id="18" value="Antwort auswerten&#xa;response.command lesen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="1400" width="330" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- Befehl vorhanden? -->
+    <mxCell id="19" value="command != 'none'&#xa;und vorhanden?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="280" y="1505" width="260" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- COMMANDS_ENABLED? -->
+    <mxCell id="20" value="COMMANDS_ENABLED&#xa;= true?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="280" y="1635" width="260" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Befehl ignorieren -->
+    <mxCell id="21" value="Befehl ignorieren&#xa;(Commands deaktiviert)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="620" y="1645" width="170" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Befehl ausfuehren -->
+    <mxCell id="22" value="Befehl ausfuehren&#xa;shutdown / reboot / sleep&#xa;hibernate / lock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="1765" width="330" height="65" as="geometry" />
+    </mxCell>
+
+    <!-- Warten -->
+    <mxCell id="23" value="Start-Sleep&#xa;UPDATE_INTERVAL Sekunden warten" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="245" y="1880" width="330" height="55" as="geometry" />
+    </mxCell>
+
+    <!-- Zurueck zur Loop -->
+    <mxCell id="24" value="Naechster&#xa;Durchlauf" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="300" y="1985" width="220" height="50" as="geometry" />
+    </mxCell>
+
+
+    <!-- ============ EDGES ============ -->
+
+    <mxCell id="50" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="2" target="3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="51" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="3" target="4" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="52" value="Nein" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="4" target="5" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="53" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="5" target="6" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="54" value="Ja" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="4" target="7" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="55" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="7" target="8" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="56" value="Nein" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="8" target="9" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="57" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="9" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="58" value="Ja" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="8" target="11" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="59" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="11" target="12" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="60" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="12" target="13" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="61" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="13" target="14" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="62" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="14" target="15" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="63" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="15" target="16" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="64" value="Nein" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="16" target="17" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Fehler -> Warten (weiter im Loop) -->
+    <mxCell id="65" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="17" target="23" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="760" y="1910" />
+          <mxPoint x="575" y="1910" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <mxCell id="66" value="Ja" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="16" target="18" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="67" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="18" target="19" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Kein Befehl -> Warten -->
+    <mxCell id="68" value="Nein" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="19" target="23" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="100" y="1545" />
+          <mxPoint x="100" y="1910" />
+          <mxPoint x="245" y="1910" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <mxCell id="69" value="Ja" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="19" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="70" value="Nein" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="20" target="21" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Ignoriert -> Warten -->
+    <mxCell id="71" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="21" target="23" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="760" y="1910" />
+          <mxPoint x="575" y="1910" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <mxCell id="72" value="Ja" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="20" target="22" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="73" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="22" target="23" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="74" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="23" target="24" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Zurueck zur Hauptschleife (Pfeil nach oben links) -->
+    <mxCell id="75" style="edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="24" target="12" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="60" y="2010" />
+          <mxPoint x="60" y="795" />
+          <mxPoint x="245" y="795" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+  </root>
+</mxGraphModel>
