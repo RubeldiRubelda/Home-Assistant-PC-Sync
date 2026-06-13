@@ -29,7 +29,7 @@ Works from any network as long as your HA instance is reachable (local or via Du
 
 ## Features
 
-| Metric / Action | Linux | Windows |
+| Metric / Action | Linux (Not Supported) | Windows |
 |---|:---:|:---:|
 | CPU usage (%) | ✅ | ✅ |
 | Memory usage (%) | ✅ | ✅ |
